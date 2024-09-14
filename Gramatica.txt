@@ -1,0 +1,35 @@
+<Exp> ::= <Term> ((MINUS | PLUS) <Term>)*
+<Exp> ::= [LET] ID EQ <Exp>
+<Term> ::= <Factor> ((MUL | DIV) <Factor>)*
+<Factor> ::= (PLUS | MINUS)* <Factor>
+<Factor> ::= <Pow>
+<Pow> ::= <Atom> (<Pow> <Factor>)*
+<Atom> ::= INT | FLOAT | STRING | <List> | <Tuple> | ID | LPAR <Exp> RPAR
+
+<FUNC> ::= ID 
+
+<List> ::= LSQUARE [ <Exp> (COMMA <Exp>)* ] RSQUARE
+
+<Tuple> ::= LPAR ( <Exp> (COMMA <Exp>)* )
+
+<Atom> 
+
+<Dict> ::= LKEY { <Atom> <DOUBLEPOINT> <Exp> (COMMA <Atom> <DOUBLEPOINT> <Exp>)* } RKEY
+
+onde,
+    (x)* é zero ou mais x
+    (u | v) é a escolha de u ou v
+    [x] x é opcional
+    <variavel_nao_terminal> é um nao terminal (variável)
+    INT é um inteiro qualquer
+    FLOAT é um float qualquer
+    ID é qualquer identificador
+    PLUS é o +
+    MINUS é o -
+    MUL é o *
+    DIV é o /
+    LPAR é o (
+    RPAR é o )
+    POINT é o .
+    DOUBLEPOINT é o :
+
