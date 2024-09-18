@@ -10,11 +10,9 @@
 
 <List> ::= LSQUARE [ <Exp> (COMMA <Exp>)* ] RSQUARE
 
-<Tuple> ::= LPAR ( <Exp> (COMMA <Exp>)* )
+<Tuple> ::= LPAR [ <Exp> (COMMA <Exp>)* ] RPAR
 
-<Atom> 
-
-<Dict> ::= LKEY { <Atom> <DOUBLEPOINT> <Exp> (COMMA <Atom> <DOUBLEPOINT> <Exp>)* } RKEY
+<Dict> ::= LKEY [<Exp> <DOUBLEPOINT> <Exp> (COMMA <Atom> <DOUBLEPOINT> <Exp>)* ] RKEY
 
 onde,
     (x)* é zero ou mais x

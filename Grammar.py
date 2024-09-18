@@ -36,15 +36,12 @@ class Exp(Grammar): # A variable from Grammar G
                 return pr.fail(f"{Error.parserError}: Esperado '{Consts.EQ}'")
             return self.varAssign(pr, varName)
         
-
         if (self.CurrentToken().type == Consts.ID):
             if (self.parser.Lookahead(1).type == Consts.EQ):
                 varName = self.CurrentToken()
                 self.NextToken()
                 return self.varAssign(pr, varName)
 
-        
-        
         node = pr.registry(NoOpBinaria.Perform(Term(self.parser), (Consts.PLUS, Consts.MINUS)))
         if pr.error:
             return pr.fail(f"{Error.parserError}: Esperado a '{Consts.INT}', '{Consts.FLOAT}', '{Consts.ID}', '{Consts.LET}', '{Consts.PLUS}', '{Consts.MINUS}', '{Consts.LPAR}'")
@@ -71,21 +68,6 @@ class Factor(Grammar): # A variable from Grammar G
             if ast.error: return ast
             return ast.success(NoOpUnaria(tok, factor))
         return Pow(self.parser).Rule()
-
-
-class Indice(Grammar):
-    def Rule(self):
-        ast = self.GetParserManager()
-        tok = self.CurrentToken()
-
-        if tok.type == Consts.DIGITOS:
-            self.NextToken()
-            indeice = ast.registry(Indice(self.parser).Rule())
-            if ast.error: return ast
-            return ast.success(NoOpUnaria(tok, indice))
-
-        return Indice(self.parser).Rule()
-
 
 class Pow(Grammar): # A variable from Grammar G
     def Rule(self):
@@ -154,9 +136,21 @@ class Atom(Grammar):
         elif tok.type == Consts.STRING:
             self.NextToken()
             return ast.success(NoString(tok))
+            
         elif tok.type == Consts.ID:
             self.NextToken()
+
+            if self.CurrentToken().type == Consts.LSQUARE:
+                self.NextToken()
+                indexExp = ast.registry(Exp(self.parser).Rule())
+                if ast.error: return ast
+                if self.CurrentToken().type != Consts.RSQUARE:
+                    return ast.fail(f"{Error.parserError}: Esperando por '{Consts.RSQUARE}'")
+                self.NextToken()
+                return ast.success(NoIndex(tok, indexExp))
+
             return ast.success(NoVarAccess(tok))
+            
         elif tok.type == Consts.LPAR:
             if self.parser.Lookahead(1).type == Consts.LETRAS_DIGITOS or self.parser.Lookahead(1).type == Consts.STRING or self.parser.Lookahead(2).type == Consts.COMMA or self.parser.Lookahead(1).type == Consts.RPAR:
                 tupleExp = ast.registry(TupleExp(self.parser).Rule())

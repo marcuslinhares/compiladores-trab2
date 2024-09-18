@@ -163,3 +163,32 @@ class NOTuple(Visitor):
 
     def __repr__(self):
         return f'{self.elements}'
+		
+
+class NoIndex(Visitor):
+    def __init__(self, listNameTok, indice):
+        self.listNameTok = listNameTok
+        self.indice = indice
+
+    def visit(self, operator):
+        listName = self.listNameTok.value
+        listValue = operator.symbolTable.get(listName)
+
+        if not isinstance(listValue, TList):
+            return operator.fail(Error(f"{Error.runTimeError}: '{listName}' não é uma lista"))
+
+        indiceValue = operator.registry(self.indice.visit(operator))
+        if operator.error: return operator
+
+        if not isinstance(indiceValue, TNumber):
+            return operator.fail(Error(f"{Error.runTimeError}: O índice deve ser um número"))
+
+        if len(listValue.value) < indiceValue.value:
+            return operator.fail(Error(f"{Error.runTimeError}: Indice fora dos limites da lista"))
+        
+        result = listValue.index(indiceValue)
+        
+        return operator.success(result)
+
+    def __repr__(self):
+        return f'{self.listNameTok}[{self.indexNode}]'

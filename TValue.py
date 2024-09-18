@@ -139,8 +139,7 @@ class TList(TValue):
         else:
             return TList(self.value + [other]).setMemory(self.memory), None
 
-
-    def index(self, other):
+    def mult(self, other):
         inlist = self.value
         inlistValues = []
         for element in inlist:
@@ -155,15 +154,9 @@ class TList(TValue):
         return TList(newList).setMemory(self.memory), None
 
     
-    def mult(self, other):
-        inlist = self.value
-        inlistValues = []
-        for element in inlist:
-            inlistValues.append(element.value)
-
-        return TNumber(inlistValues[other.value]).setMemory(self.memory), None
+    def index(self, other):
+        return self.value[other.value]
         
-
     def copy(self):
         copy = TList(self.value)
         copy.setMemory(self.memory)
@@ -176,7 +169,7 @@ class TList(TValue):
 class TTuple(TValue):
     def __init__(self, value):
         super().__init__()
-        self.value = tuple(value)
+        self.value = tuple(value, )
         self.setMemory()
 
     def setMemory(self, memory=None):
@@ -187,7 +180,7 @@ class TTuple(TValue):
         if isinstance(other, TTuple):
             return TTuple(self.value + other.value).setMemory(self.memory), None
         else:
-            return TTuple(self.value + (other,)).setMemory(self.memory), None
+            return TTuple(self.value + (other.value,)).setMemory(self.memory), None
 
     def mult(self, other):
         intuple = self.value
