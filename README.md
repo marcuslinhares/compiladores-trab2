@@ -64,9 +64,6 @@ Este arquivo contém classes que representam os diferentes tipos de valores da l
 
 Contém funções auxiliares para leitura e gravação de arquivos, além de outras operações utilitárias que são utilizadas em várias partes do compilador. Essas funções facilitam a interação com arquivos de entrada e saída, como o código-fonte a ser compilado ou o código assembly gerado.
 
-
-Esses arquivos em conjunto formam a espinha dorsal do compilador, desde a análise e validação do código-fonte até sua execução ou conversão para uma linguagem de baixo nível. Cada um desempenha um papel crucial no pipeline de compilação.
-
 ----------
 
 ## Integração dos Arquivos
