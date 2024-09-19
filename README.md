@@ -1,4 +1,4 @@
-# Trabalho de Compiladores - Projeto
+# Trabalho de Compiladores
 
 Este repositório contém a implementação de um compilador para uma linguagem customizada, desenvolvido como parte do trabalho da disciplina de Compiladores. O compilador realiza todas as etapas do processo de tradução de uma linguagem, incluindo análise léxica, análise sintática, verificação semântica, e geração de código final em assembly.
 
