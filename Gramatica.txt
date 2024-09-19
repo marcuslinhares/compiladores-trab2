@@ -6,13 +6,9 @@
 <Pow> ::= <Atom> (<Pow> <Factor>)*
 <Atom> ::= INT | FLOAT | STRING | <List> | <Tuple> | ID | LPAR <Exp> RPAR
 
-<FUNC> ::= ID 
-
 <List> ::= LSQUARE [ <Exp> (COMMA <Exp>)* ] RSQUARE
 
 <Tuple> ::= LPAR [ <Exp> (COMMA <Exp>)* ] RPAR
-
-<Dict> ::= LKEY [<Exp> <DOUBLEPOINT> <Exp> (COMMA <Atom> <DOUBLEPOINT> <Exp>)* ] RKEY
 
 onde,
     (x)* é zero ou mais x

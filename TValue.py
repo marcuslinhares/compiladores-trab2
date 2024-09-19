@@ -114,6 +114,9 @@ class TString(TValue):
             return TString(self.value * other.value).setMemory(self.memory), None
         return super().add(other)
 
+    def index(self, other):
+        return self.value[other.value]
+
     def copy(self):
         copy = TString(self.value)
         copy.setMemory(self.memory)
@@ -153,7 +156,6 @@ class TList(TValue):
 
         return TList(newList).setMemory(self.memory), None
 
-    
     def index(self, other):
         return self.value[other.value]
         
@@ -176,25 +178,8 @@ class TTuple(TValue):
         self.memory = memory
         return self
 
-    def add(self, other):
-        if isinstance(other, TTuple):
-            return TTuple(self.value + other.value).setMemory(self.memory), None
-        else:
-            return TTuple(self.value + (other.value,)).setMemory(self.memory), None
-
-    def mult(self, other):
-        intuple = self.value
-        intupleValues = []
-        for element in intuple:
-            intupleValues.append(element.value)
-
-        if isinstance(other, TNumber):
-            newTuple = []
-
-            for element in intupleValues:
-                newTuple.append(element * other.value)
-
-        return TTuple(newTuple).setMemory(self.memory), None
+    def index(self, other):
+        return self.value[other.value]
 
     def copy(self):
         copy = TTuple(self.value)

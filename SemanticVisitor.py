@@ -166,29 +166,29 @@ class NOTuple(Visitor):
 		
 
 class NoIndex(Visitor):
-    def __init__(self, listNameTok, indice):
-        self.listNameTok = listNameTok
-        self.indice = indice
+	def __init__(self, objectNameTok, indice):
+		self.objectNameTok = objectNameTok
+		self.indice = indice
+		
+	def visit(self, operator):
+		objectName = self.objectNameTok.value
+		objectValue = operator.symbolTable.get(objectName)
 
-    def visit(self, operator):
-        listName = self.listNameTok.value
-        listValue = operator.symbolTable.get(listName)
+		if not objectValue: return operator.fail(Error(f"{Error.runTimeError}: '{objectName}' nao esta definido"))
+		
+		if not isinstance(objectValue, TList) and not isinstance(objectValue, TTuple) and not isinstance(objectValue, TString):
+			return operator.fail(Error(f"{Error.runTimeError}: '{objectName}' não é uma [Lista, Tupla, String]"))
 
-        if not isinstance(listValue, TList):
-            return operator.fail(Error(f"{Error.runTimeError}: '{listName}' não é uma lista"))
+		indiceValue = operator.registry(self.indice.visit(operator))
+		if operator.error: return operator
+	
+		if not isinstance(indiceValue, TNumber):
+			return operator.fail(Error(f"{Error.runTimeError}: O índice deve ser um número"))
+			
+		if len(objectValue.value) < indiceValue.value:
+			return operator.fail(Error(f"{Error.runTimeError}: Indice fora dos limites"))
 
-        indiceValue = operator.registry(self.indice.visit(operator))
-        if operator.error: return operator
+		return operator.success(objectValue.index(indiceValue))
 
-        if not isinstance(indiceValue, TNumber):
-            return operator.fail(Error(f"{Error.runTimeError}: O índice deve ser um número"))
-
-        if len(listValue.value) < indiceValue.value:
-            return operator.fail(Error(f"{Error.runTimeError}: Indice fora dos limites da lista"))
-        
-        result = listValue.index(indiceValue)
-        
-        return operator.success(result)
-
-    def __repr__(self):
-        return f'{self.listNameTok}[{self.indexNode}]'
+		def __repr__(self):
+			return f'{self.listNameTok}[{self.indexNode}]'
